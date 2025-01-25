@@ -1,0 +1,31 @@
+name: Daily Commit
+
+# Schedule the action to run every day at 8:00 AM UTC
+on:
+  schedule:
+    - cron: "0 8 * * *"
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Update the file
+      - name: Update file
+        run: |
+          echo "Commit timestamp: $(date)" >> daily-log.txt
+
+      # Step 3: Commit and push changes
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add daily-log.txt
+          git commit -m "Daily commit on $(date)"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
