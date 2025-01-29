@@ -24,17 +24,15 @@ jobs:
         run: |
           echo "$(date) - Automated commit triggered" >> log.txt
 
-      # Step 4: Commit changes
-      - name: Commit changes
+      # Step 4: Commit changes as your user
+      - name: Commit changes as user
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "MayureshGawas99"  # Replace with your name
+          git config --global user.email "narayan.gawas@spit.ac.in"  # Replace with your email
           git add log.txt
           git commit -m "Automated commit at $(date)" || echo "No changes to commit"
-
-      # Step 5: Push changes to the repository
-      - name: Push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      # Step 5: Push changes using your personal token
+      - name: Push changes as your user
         run: |
-          git push origin main
+          git push https://$GITHUB_ACTOR:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${{ github.repository }} main
